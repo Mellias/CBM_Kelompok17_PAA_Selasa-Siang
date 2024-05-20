@@ -1,2 +1,12 @@
 # Case-Based-Method-PAA
- Repository Case Based Method (CBM) untuk mata kuliah Perancangan dan Analisis Algoritma
+ Case Based Method (CBM) Perancangan dan Analisis Algoritma (PAA) Design IKN City 
+
+ Dosen Pengampu: Tekad Matulatan, S.Sos., S.Kom., M.Inf.Tech
+
+ Kelompok 17, dengan anggota:
+ 2201020064 - Rahmad Ananda <br>
+ 2201020043 - Nico Gusti Wiranada Aklis <br>
+ 2201020001 - Arya Winata <br>
+ 2201020063 - Paul Gracia Surbakti <br>
+ 2201020081 - Wulan Novitasari <br>
+ 2201020041 - Amelia
