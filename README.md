@@ -3,7 +3,7 @@
 
  Dosen Pengampu: Tekad Matulatan, S.Sos., S.Kom., M.Inf.Tech
 
- Kelompok 17, dengan anggota:
+ Kelompok 17, dengan anggota: <br>
  2201020064 - Rahmad Ananda <br>
  2201020043 - Nico Gusti Wiranada Aklis <br>
  2201020001 - Arya Winata <br>
