@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw
 import random
+import numpy as np
 
 # Inisialisasi ukuran canvas dan skala
 skala = 10
@@ -21,18 +22,16 @@ draw = ImageDraw.Draw(image)
 # Fungsi untuk menggambar jalan horizontal
 def draw_horizontal_road(y, road_map):
     draw.line([0, y, lebar, y], fill="black", width=roadSize)
-    for x in range(lebar):
-        for w in range(roadSize):
-            if y + w < tinggi:
-                road_map[x][y + w] = True
+    for w in range(roadSize):
+        if y + w < tinggi:
+            road_map[y + w, :] = True
 
 # Fungsi untuk menggambar jalan vertikal
 def draw_vertical_road(x, road_map):
     draw.line([x, 0, x, tinggi], fill="black", width=roadSize)
-    for y in range(tinggi):
-        for w in range(roadSize):
-            if x + w < lebar:
-                road_map[x + w][y] = True
+    for w in range(roadSize):
+        if x + w < lebar:
+            road_map[:, x + w] = True
 
 # Fungsi untuk menggambar belokan satu arah
 def draw_turn(x, y, direction, road_map):
@@ -53,10 +52,10 @@ def draw_turn(x, y, direction, road_map):
         for j in range(roadSize):
             if direction in ["right", "left"]:
                 if x + i < lebar and y + j < tinggi:
-                    road_map[x + i][y + j] = True
+                    road_map[y + j, x + i] = True
             elif direction in ["up", "down"]:
                 if x + j < lebar and y + i < tinggi:
-                    road_map[x + j][y + i] = True
+                    road_map[y + i, x + j] = True
 
 # Fungsi untuk membuat jalan secara iteratif
 def make_roads(road_map):
@@ -86,22 +85,19 @@ def make_roads(road_map):
                 draw_turn(x, y, random.choice(["right", "left", "up", "down"]), road_map)
 
 # Inisialisasi peta jalan
-road_map = [[False] * tinggi for _ in range(lebar)]
+road_map = np.zeros((tinggi, lebar), dtype=bool)
 
 # Memanggil fungsi untuk membuat jalan
 make_roads(road_map)
 
 # Fungsi untuk menggambar padding di sekitar jalan
 def draw_padding(road_map):
-    for x in range(lebar):
-        for y in range(tinggi):
-            if road_map[x][y]:
-                x1, y1 = max(0, x - padding), max(0, y - padding)
-                x2, y2 = min(lebar, x + roadSize + padding), min(tinggi, y + roadSize + padding)
-                for i in range(x1, x2):
-                    for j in range(y1, y2):
-                        if not road_map[i][j]:  # Only draw padding if it's not already part of a road
-                            draw.point((i, j), fill="lightgreen")
+    padded_map = np.copy(road_map)
+    for x in range(-padding, padding + roadSize):
+        for y in range(-padding, padding + roadSize):
+            padded_map = np.logical_or(padded_map, np.roll(np.roll(road_map, y, axis=0), x, axis=1))
+    padded_coords = np.where(padded_map)
+    draw.point(list(zip(padded_coords[1], padded_coords[0])), fill="lightgreen")
 
 # Membuat peta yang mempertimbangkan padding
 draw_padding(road_map)
@@ -109,32 +105,14 @@ draw_padding(road_map)
 # Fungsi untuk menempatkan bangunan pada posisi acak tanpa bertabrakan dengan jalan atau padding
 def place_buildings(num_buildings, road_map):
     for _ in range(num_buildings):
-        # pilih bangunan secara acak
         building = random.choice(bangunan)
-        
         placed = False
         while not placed:
-            # Tentukan posisi acak untuk bangunan
             x = random.randint(0, lebar - building.width)
             y = random.randint(0, tinggi - building.height)
-            
-            # Periksa apakah posisi ini aman (tidak bertabrakan dengan jalan atau padding)
-            collision = False
-            for i in range(building.width):
-                for j in range(building.height):
-                    if road_map[x + i][y + j]:  # Check collision with road and padding
-                        collision = True
-                        break
-                if collision:
-                    break
-            
-            if not collision:
-                # Tempelkan bangunan pada peta
+            if not road_map[y:y+building.height, x:x+building.width].any():
                 image.paste(building, (x, y), building)
-                # Tandai area yang ditempati bangunan pada peta
-                for i in range(building.width):
-                    for j in range(building.height):
-                        road_map[x + i][y + j] = True
+                road_map[y:y+building.height, x:x+building.width] = True
                 placed = True
 
 # Tempatkan beberapa bangunan pada peta
@@ -142,4 +120,4 @@ place_buildings(10, road_map)
 
 # Menampilkan dan menyimpan gambar
 image.show()
-image.save("iterative_roads_with_turns_and_padding_no_collision.png")
+image.save("optimized_roads_with_turns_and_padding_no_collision.png")
