@@ -58,7 +58,6 @@ class MapGenerator:
         self.map = [[EMPTY for _ in range(size)] for _ in range(size)]
         self.generate_map()
 
-    
     def generate_map(self):
         self.map = [[EMPTY for _ in range(self.size)] for _ in range(self.size)]
         crossroad_count = 0
@@ -133,23 +132,37 @@ class MapGenerator:
         if direction == 'up':
             for a in range(x-1, -1, -1):
                 if self.map[a][y] != EMPTY:
+                    self.handle_intersection(a, y, 'vertical_road')
                     break
                 self.map[a][y] = 'vertical_road'
         elif direction == 'down':
             for a in range(x+1, self.size):
                 if self.map[a][y] != EMPTY:
+                    self.handle_intersection(a, y, 'vertical_road')
                     break
                 self.map[a][y] = 'vertical_road'
         elif direction == 'left':
             for b in range(y-1, -1, -1):
                 if self.map[x][b] != EMPTY:
+                    self.handle_intersection(x, b, 'horizontal_road')
                     break
                 self.map[x][b] = 'horizontal_road'
         elif direction == 'right':
             for b in range(y+1, self.size):
                 if self.map[x][b] != EMPTY:
+                    self.handle_intersection(x, b, 'horizontal_road')
                     break
                 self.map[x][b] = 'horizontal_road'
+
+    def handle_intersection(self, x, y, road_type):
+        if self.map[x][y] in ['vertical_road', 'horizontal_road']:
+            self.map[x][y] = CROSSROAD
+        elif self.map[x][y] in ['tjunction_up', 'tjunction_down', 'tjunction_left', 'tjunction_right']:
+            self.map[x][y] = CROSSROAD
+        elif self.map[x][y] in ['turn_right_up', 'turn_left_up', 'turn_right_down', 'turn_left_down']:
+            self.map[x][y] = CROSSROAD
+        else:
+            self.map[x][y] = road_type
 
     def place_buildings(self):
         for building, minimum in MINIMUM_BANGUNAN.items():
