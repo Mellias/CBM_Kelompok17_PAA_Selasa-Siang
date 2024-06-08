@@ -57,9 +57,9 @@ class MapGenerator:
         self.size = size
         self.map = [[EMPTY for _ in range(size)] for _ in range(size)]
         self.generate_map()
+
     
     def generate_map(self):
-        # MEMBERSIHKAN PETA
         self.map = [[EMPTY for _ in range(self.size)] for _ in range(self.size)]
         crossroad_count = 0
         t_junction_count = 0
@@ -175,19 +175,16 @@ class MapGenerator:
                 count += 1
 
     def is_location_valid_for_building(self, x, y, width, height):
-        # periksa apakah ada sel di area yang diusulkan yang merupakan jalan atau bangunan lain
         for a in range(x, x + width):
             for b in range(y, y + height):
                 if a >= 0 and a < self.size and b >= 0 and b < self.size:
                     if self.map[a][b] != EMPTY:
                         return False
-        # periksa sel di sekitarnya untuk mencari jalan dalam jarak 1 sel
         road_found = False
         for a in range(max(0, x - 1), min(self.size, x + width + 1)):
             for b in range(max(0, y - 1), min(self.size, y + height + 1)):
                 if self.map[a][b] in ['vertical_road', 'horizontal_road', CROSSROAD, 'tjunction_up', 'tjunction_down', 'tjunction_left', 'tjunction_right', 'turn_right_up', 'turn_left_up', 'turn_right_down', 'turn_left_down']:
                     road_found = True
-                # memastikan jarak minimal 2 sel dari bangunan lain
                 if a in range(x, x + width) and b in range(y, y + height):
                     continue
                 if self.map[a][b] in UKURAN_BANGUNAN:
@@ -216,12 +213,12 @@ class MapDisplay(tk.Frame):
             'turn_left_up': ImageTk.PhotoImage(Image.open("asset/turn_left_up.png")),
             'turn_right_up': ImageTk.PhotoImage(Image.open("asset/turn_right_up.png")),
             'turn_right_down': ImageTk.PhotoImage(Image.open("asset/turn_right_down.png")),
-            BANGUNAN_BESAR: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[BANGUNAN_BESAR]}")),
-            BANGUNAN_SEDANG: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[BANGUNAN_SEDANG]}")),
-            BANGUNAN_KECIL: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[BANGUNAN_KECIL]}")),
-            RUMAH: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[RUMAH]}")),
-            POHON: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[POHON]}")),
-            'grass': ImageTk.PhotoImage(Image.open("asset/grass.png"))  # tambahkan gambar rumput
+            BANGUNAN_BESAR: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[BANGUNAN_BESAR]}").resize((UKURAN_BANGUNAN[BANGUNAN_BESAR][1] * CELL_SIZE, UKURAN_BANGUNAN[BANGUNAN_BESAR][0] * CELL_SIZE))),
+            BANGUNAN_SEDANG: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[BANGUNAN_SEDANG]}").resize((UKURAN_BANGUNAN[BANGUNAN_SEDANG][1] * CELL_SIZE, UKURAN_BANGUNAN[BANGUNAN_SEDANG][0] * CELL_SIZE))),
+            BANGUNAN_KECIL: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[BANGUNAN_KECIL]}").resize((UKURAN_BANGUNAN[BANGUNAN_KECIL][1] * CELL_SIZE, UKURAN_BANGUNAN[BANGUNAN_KECIL][0] * CELL_SIZE))),
+            RUMAH: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[RUMAH]}").resize((UKURAN_BANGUNAN[RUMAH][1] * CELL_SIZE, UKURAN_BANGUNAN[RUMAH][0] * CELL_SIZE))),
+            POHON: ImageTk.PhotoImage(Image.open(f"asset/{GAMBAR_BANGUNAN[POHON]}").resize((UKURAN_BANGUNAN[POHON][1] * CELL_SIZE, UKURAN_BANGUNAN[POHON][0] * CELL_SIZE))),
+            'grass': ImageTk.PhotoImage(Image.open("asset/grass.png").resize((CELL_SIZE, CELL_SIZE)))  # tambahkan gambar rumput
         }
 
         # frame untuk kanvas peta dan tombol
