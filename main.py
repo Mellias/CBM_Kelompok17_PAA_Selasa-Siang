@@ -10,6 +10,7 @@ CELL_SIZE = 32
 EMPTY = 0
 JALAN = 'road'
 CROSSROAD = 'crossroad'
+#CROSSROAD2 = 'crossroad2'
 T_JUNCTION = 't_junction'
 TURN = 'turn'
 
@@ -196,7 +197,7 @@ class MapGenerator:
         road_found = False
         for a in range(max(0, x - 1), min(self.size, x + width + 1)):
             for b in range(max(0, y - 1), min(self.size, y + height + 1)):
-                if self.map[a][b] in ['vertical_road', 'horizontal_road', CROSSROAD, 'tjunction_up', 'tjunction_down', 'tjunction_left', 'tjunction_right', 'turn_right_up', 'turn_left_up', 'turn_right_down', 'turn_left_down']:
+                if self.map[a][b] in ['vertical_road', 'horizontal_road', CROSSROAD,'tjunction_up', 'tjunction_down', 'tjunction_left', 'tjunction_right', 'turn_right_up', 'turn_left_up', 'turn_right_down', 'turn_left_down']:
                     road_found = True
                 if a in range(x, x + width) and b in range(y, y + height):
                     continue
@@ -218,6 +219,7 @@ class MapDisplay(tk.Frame):
             'vertical_road': ImageTk.PhotoImage(Image.open("asset/vertical_road.png")),
             'horizontal_road': ImageTk.PhotoImage(Image.open("asset/horizontal_road.png")),
             'crossroad': ImageTk.PhotoImage(Image.open("asset/crossroad.png")),
+            #'crossroad2': ImageTk.PhotoImage(Image.open("asset/crossroad2.png")),
             'tjunction_up': ImageTk.PhotoImage(Image.open("asset/tjunction_up.png")),
             'tjunction_down': ImageTk.PhotoImage(Image.open("asset/tjunction_down.png")),
             'tjunction_left': ImageTk.PhotoImage(Image.open("asset/tjunction_left.png")),
@@ -252,6 +254,10 @@ class MapDisplay(tk.Frame):
         self.main_frame.grid_rowconfigure(0, weight=1)
         self.main_frame.grid_columnconfigure(0, weight=1)
         
+        # Bind mouse wheel event to canvas
+        self.canvas.bind_all("<MouseWheel>", self._on_mouse_wheel)
+        self.canvas.bind_all("<Shift-MouseWheel>", self._on_shift_mouse_wheel)
+
         self.draw_map()
 
         # frame untuk tombol
@@ -260,6 +266,12 @@ class MapDisplay(tk.Frame):
 
         self.redesign_button = tk.Button(self.button_frame, text="REDESIGN", command=self.redesign_map)
         self.redesign_button.pack()
+
+    def _on_mouse_wheel(self, event):
+        self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+    def _on_shift_mouse_wheel(self, event):
+        self.canvas.xview_scroll(int(-1*(event.delta/120)), "units")
 
     def draw_map(self):
         self.canvas.delete("all")
