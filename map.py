@@ -31,7 +31,7 @@ class map:
         self.map = Image.new("RGBA", (self.width, self.height), "lightgreen")
         self.mapDraw = ImageDraw.Draw(self.map)
 
-        # Set the counts for buildings
+        # Total bangunan
         self.building_counts = {
             "big": 1,
             "medium_v": 2,
@@ -201,7 +201,7 @@ class MapApp:
         self.map_label = ttk.Label(frame)
         self.map_label.grid(row=0, column=0, padx=10, pady=10)
 
-        generate_button = ttk.Button(root, text="Generate Map", command=self.update_map)
+        generate_button = ttk.Button(root, text="Redesign Map", command=self.update_map)
         generate_button.grid(row=1, column=0, pady=10)
 
         zoom_in_button = ttk.Button(root, text="Zoom In", command=self.zoom_in)
