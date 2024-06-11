@@ -5,8 +5,12 @@
 
  Kelompok 17, dengan anggota: <br>
  2201020043 - [Nico Gusti Wiranada Aklis](https://github.com/ICOONN) <br>
- 2201020064 - [Rahmad Ananda]() <br>
- 2201020001 - [Arya Winata](https://github.com/AryaWinata08) <br>
- 2201020063 - [Paul Gracia Surbakti](https://github.com/PaulGraciaa) <br>
+ 2201020041 - [Amelia](https://github.com/Mellias) <br>
  2201020081 - [Wulan Novitasari](https://github.com/novi2823) <br>
- 2201020041 - [Amelia](https://github.com/Mellias)
+ 2201020063 - [Paul Gracia Surbakti](https://github.com/PaulGraciaa) <br>
+ 2201020001 - [Arya Winata](https://github.com/AryaWinata08) <br>
+ 2201020064 - [Rahmad Ananda]()
+ 
+ 
+
+ 
