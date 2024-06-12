@@ -192,7 +192,7 @@ class MapApp:
         self.update_map()
 
     def setup_ui(self, root):
-        root.title("Map Generator")
+        root.title("Map IKN")
         root.bind("<MouseWheel>", self.scroll)
 
         frame = ttk.Frame(root, padding=10)
@@ -234,7 +234,10 @@ class MapApp:
             self.update()
 
     def scroll(self, event):
-        self.viewport_y = max(0, self.viewport_y - 20) if event.delta > 0 else min(self.new_map.height, self.viewport_y + 20)
+        if event.state & 0x0001:
+            self.viewport_x = max(0, self.viewport_x - 20) if event.delta > 0 else min(self.new_map.width, self.viewport_x + 20)
+        else:
+            self.viewport_y = max(0, self.viewport_y - 20) if event.delta > 0 else min(self.new_map.height, self.viewport_y + 20)
         self.update()
 
 if __name__ == "__main__":
