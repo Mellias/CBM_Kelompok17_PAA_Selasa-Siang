@@ -199,12 +199,12 @@ class MapApp:
         self.map_label.config(image=img_tk)
         self.map_label.image = img_tk
 
-    def zoom_in(self):
+    def zoom_out(self):
         if self.zoom_factor < 5.0:
             self.zoom_factor += 0.1
             self.update()
 
-    def zoom_out(self):
+    def zoom_in(self):
         if self.zoom_factor > 0.5:
             self.zoom_factor -= 0.1
             self.update()
